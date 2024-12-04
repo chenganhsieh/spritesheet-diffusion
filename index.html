@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta charset="utf-8">
+    <meta property="og:title" content="RewardMultiverse" />
+    <meta property="og:description" content="We propose RewardMultiverse, a framework that includes numerous reward functions for the alignment of large-scale text-to-image diffusion models, allowing users to easily customize their own reward function." />
+    <meta property="og:url" content="https://rewardmultiverse.github.io" />
+    <meta property="og:image" content="https://rewardmultiverse.github.io/images/method.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="628" />
+
+    <meta name="viewport" content="initial-scale=1" />
+    <meta name="description" content="We propose RewardMultiverse, a framework that includes numerous reward functions for the alignment of large-scale text-to-image diffusion models, allowing users to easily customize their own reward function.">
+    <meta name="keywords" content="alignment, diffusion models, reinforcement learning, text-to-image models, direct reward learning">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="RewardMultiverse" />
+    <meta name="twitter:description" content="We propose RewardMultiverse, a framework that includes numerous reward functions for the alignment of large-scale text-to-image diffusion models, allowing users to easily customize their own reward function."
+    />
+    <meta name="twitter:url" content="https://rewardmultiverse.github.io" />
+    <meta name="twitter:image" content="https://rewardmultiverse.github.io/images/method.png" />
+    <meta name="twitter:site" content="@chenganhsieh" />
+    <meta name="twitter:image" content="https://rewardmultiverse.github.io/images/method.png" />
+    <meta name="twitter:image:src" content="https://rewardmultiverse.github.io/images/method.png" />
+    <meta name="twitter:image_alt" content="reward multiverse" />
+
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-NXF59J4');
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <title>Reward Multiverse</title>
+    <link rel="stylesheet" href="static/css/range_style_new.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/bulma.min.css">
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="static/css/index.css">
+    <link rel="stylesheet" href="https://use.typekit.net/iag3ven.css">
+    <link rel="stylesheet" href="static/css/prism.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👾</text></svg>">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs-bibtex@2.0.1/prism-bibtex.min.js">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="static/js/fontawesome.all.min.js"></script>
+    <script src="static/js/bulma-carousel.min.js"></script>
+    <script src="static/js/bulma-slider.min.js"></script>
+
+
+
+
+</head>
+
+<body>
+    <section class="hero">
+        <div class="hero-body aos-init aos-animate d-flex flex-column justify-content-center" data-aos="zoom-in" data-aos-delay="1000">
+            <div class="container d-flex flex-column justify-content-center">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-2 publication-title">Sprite Sheet Diffusion: Generate Game Character for animation</h1>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block"><a href="https://chenganhsieh.github.io/">Cheng An Hsieh</a>,</span>
+                            <span class="author-block"><a href="">Jing Zhang</a>,</span>
+                            <span class="author-block"><a href="">Ava Yan</a>,</span>
+                        </div>
+
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">Carnegie Mellon University</span>
+                            <!-- <span class="author-block"><sup>2</sup>Google DeepMind</span> -->
+                        </div>
+                        <!-- <div class="is-size-5 pt-2 pb-2 has-text-centered publication-venue">
+            <span>In Submission</span>
+          </div> -->
+
+                        <div class="column has-text-centered">
+                            <div class="publication-links">
+                                <!-- PDF Link. -->
+                                <span class="link-block">
+                <a href="https://docs.google.com/document/d/1Wy-OdNdHZcWxlsSBALWcSZLke1xRzJXdR3efJoiF_jg/edit?usp=sharing"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                                <span>Paper</span>
+                                </a>
+                                </span>
+                                <!-- <span class="link-block">
+                <a href="https://arxiv.org/abs/2310.03739"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                                <span>arXiv</span>
+                                </a>
+                                </span> -->
+                                <!-- Video Link. -->
+                                <!-- <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+                                <!-- Code Link. -->
+                                <span class="link-block">
+                <a href="https://github.com/RewardMultiverse/reward-multiverse"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                                <span>Code</span>
+                                </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- <section class="hero teaser">
+        <div class="is-centered has-text-centered">
+            <div class="hero-body ">
+
+
+                <video width="1200" autoplay muted>
+          Your browser does not support the video tag.
+      </video>
+
+
+
+
+                <h2 class="pt-1 container is-max-desktop subtitle has-text-centered">
+                    AlignProp is a direct backpropagation-based approach to finetune text-to-image diffusion models for desired reward function. Above we show finetuning results for various reward functions.
+                </h2>
+
+            </div>
+        </div>
+    </section> -->
+
+    <section class="section pt-2">
+        <div class="container is-max-desktop">
+            <!-- Abstract. -->
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <h2 class="title is-3 p">Abstract</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            In the game development process, creating character animations is a vital step that involves several stages. Typically for 2D games, illustrators begin by designing the main character image, which serves as the foundation for all subsequent animations.
+                            These subsequent animations involve drawing the character in different poses and actions, such as running, jumping, or attacking, to create a smooth motion sequence. This process requires significant manual effort from illustrators,
+                            as they must meticulously ensure consistency in design, proportions, and style across multiple frames of motion. Each frame is drawn individually, making this a time-consuming and labor-intensive task. Generative models, such
+                            as diffusion models, have the potential to revolutionize this process by automating the creation of sprite sheets. Diffusion models, known for their ability to generate diverse images, can be adapted to generate character animations.
+                            By leveraging the capabilities of diffusion models, we can significantly reduce the manual workload for illustrators, accelerate the animation creation process, and open up new creative possibilities in game development.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!--/ Abstract. -->
+            <!-- Paper video. -->
+            <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/6LdBdg8IWug?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+            <!--/ Paper video. -->
+        </div>
+    </section>
+
+
+    <!-- Method Overview -->
+    <section class=" is-light is-small" id="method-overview">
+        <div class="container is-max-widescreen">
+            <div class="columns is-centered has-text-centered">
+                <div class="column" style="border-radius: 10px; background-color: rgb(245,245,245)">
+                    <h2 class="title is-3">
+                        <span class="method-name mt-3">Reward Models</span>
+                    </h2>
+                    <p style="padding: 10px;">
+                    </p>
+                    <div id="method-overview-wrapper">
+                        <img src="static/images/method.png" alt="Reward Model Architecture" class="method-overview-full-img  method-overview" draggable="false" style="display: inline;">
+                    </div>
+                    <p style="padding: 10px;">
+                    </p>
+                    <div class="method-overview-tex has-text-justified">
+                        <p>
+                            The overview of our framework. In this work, we adapt the framework proposed by <a href="https://humanaigc.github.io/animate-anyone/">Animate Anyone</a> for the novel application of generating sprite sheets tailored for game
+                            character animation. The methodology comprises three key components: ReferenceNet, Pose Guider, and Motion Module. ReferenceNet encodes the appearance features of the character from a reference image by leveraging a SD-v1.5
+                            model with modified self-attention layers replaced by spatial-attention layers. Cross-attention, driven by a CLIP image encoder, enhances feature integration between ReferenceNet and denoising net. The Pose Guider encodes motion
+                            information using four convolution layers to align the pose image with the same resolution as the noise latent. The processed pose image is then added to the noisy latent before being input to the denoising net. To ensure temporal
+                            continuity, the Motion Module is embedded in the Res-Trans block, following spatial- and cross- attention layers, effectively modeling smooth transitions between animation frames.
+                            <!-- <p class="has-text-weight-semibold">Reward model architecture. </p> -->
+                            <!-- Given a batch of prompts, AlignProp generates images from noise through DDIM Sampling. The generated images are then evaluated using a Reward model to get a reward score. The optimization process involves updating the weights in the diffusion process
+                            by minimizing the negative of the obtained reward through gradient descent. To mitigate overfitting, we randomize the number of time-steps we backpropagate gradients to. -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!-- / Method Overview -->
+
+    <!-- Results Overview -->
+    <!-- <section class="section">
+        <div class="container is-max-widescreen">
+            <div class="columns is-centered">
+                <div class="column is-full-width">
+
+
+
+                    <h2 class="title is-3 has-text-centered">Disabling LoRA Weights</h2>
+                    <p>
+                        We illustrate the impact of deactivating finetuned LoRA weights across varying ranges of diffusion timesteps during inference. The visualization highlights that earlier timesteps predominantly contribute to semantic aspects, whereas the later timesteps
+                        are instrumental in capturing fine-grained details.
+                    </p>
+                    <div class="column ml-4">
+                        <div id="interpolation-ex7-wrapper">
+                            <img src="./lora_disable.png" class="interpolation-image" alt="Seg Acc Curve." />
+                        </div>
+                    </div>
+                    <div class="columns mt-4">
+                        <div class="column">
+                            <div id="interpolation-ex6-wrapper">
+                                <img src="./static/slot_tta_gifs/ex6.gif" class="interpolation-image" alt="Seg Acc Curve." />
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <h2 class="title pt-5 has-text-centered">Data Generation for Reward Models</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            The success of reward models in guiding diffusion processes heavily relies on the quality and relevance of the training data. To populate our training datasets, we employ two primary methods, each suited to the specific requirements of the target attributes.
+                            For attributes that can be systematically generated through straightforward mathematical formulas, such as image size, or through simple transformations, such as pixelation (where images are resized to a smaller scale and then
+                            scaled back), we utilize stable diffusion models. This approach allows us to efficiently produce a large volume of accurate and diverse images tailored to the mathematical and transformational characteristics necessary for
+                            training. Conversely, when the desired attributes involve more complex changes, such as environmental alterations or video temporal coherence, the reliance on existing datasets becomes indispensable. These datasets may consist
+                            of real images, providing naturalistic examples of environmental conditions, or synthesized images, offering controlled variations ideal for training models to recognize subtle temporal dynamics. Both real and synthesized datasets
+                            are crucial as they equip the reward models with the robustness needed to handle a variety of real-world applications. In summary, our strategy for data generation leverages both synthetic image creation via diffusion models
+                            and the utilization of comprehensive existing datasets, ensuring that our reward models are trained on a spectrum of data that spans from simple transformations to complex environmental and temporal variations.
+                            <div class="columns mt-4">
+                                <img src="static/images/data_generation.jpg" alt="data generation" />
+
+                            </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- <section class="section">
+  <div class="container is-max-widescreen">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered">Generalization to new text prompts</h2>
+        <p>
+          An important benefit of finetuning the diffusion model, over prompt or initial noise finetuning , is generalization to new prompts. Here, we evaluate AlignProp and baselines, on their capacity for generalization.
+          In the Figure above, we qualitatively compare the image generations on novel animals that were not encountered during the training phase. In this scenario, both AlignProp and the baselines are trained using an Aesthetic reward model.
+        </p>    
+        <div class="columns mt-4">
+
+          <img src="animal_baselines_2.png"
+              class="interpolation-image"
+              alt="Seg Acc Curve."/>       
+
+        </div>
+      </div>
+    </div>
+</div>
+</section> -->
+
+
+
+    <!-- <section class="section">
+  <div class="container is-max-widescreen">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered">Human Preference V2</h2>
+        <p>
+          In this Figure we qualitatively compare AlignProp with Stable diffusion while using multiple prompts of HPS v2 evaluation prompt dataset. As can be seen AlignProp achieves higher fidelity results with better image-text alignment.
+        </p>    
+        <div class="columns mt-4">
+
+          <img src="hps_results.png"
+              class="interpolation-image"
+              alt="Seg Acc Curve."/>       
+
+        </div>
+      </div>
+    </div>
+</div>
+</section> -->
+
+
+    <section class="section">
+        <div class="container is-max-widescreen">
+            <div class="columns is-centered">
+                <div class="column is-full-width">
+                    <h2 class="title is-3 has-text-centered">Results</h2>
+
+                    <p>
+                        We employ <a href="https://arxiv.org/abs/2310.03739">AlignProp</a> to fine-tune the diffusion models based on these reward functions. This approach will enhance our ability to effectively control the behavior of the models, enabling
+                        them to better align with desired objectives. The below results aligned with our expectations, as the images generated by the diffusion model with gradients fine-tuned by the reward model exhibited desired effect compared to the
+                        original images.
+                        <strong>Please move the slider to visualize results with different epochs.</strong>
+                    </p>
+
+                    <div class="pt-4 columns mb-0 is-vcentered  has-text-centered">
+                        <div class="column">
+                            <h2 class="is-size-5">Snow</h2>
+                            <!-- <img src="./animals/spider/0.png" class="interpolation-image" alt="Seg Acc Curve." /> -->
+                        </div>
+                        <div class="column">
+                            <img src="static/images/snow/0.png" class="interpolation-image" alt="Snow 0" />
+                        </div>
+                        <div class="column" id="interpolation-ex1-wrapper">
+                            <img src="static/images/snow/5.png" class="interpolation-image" alt="Snow 5" />
+                        </div>
+                        <div class="column">
+                            <img src="static/images/snow/9.png" class="interpolation-image" alt="Snow 9" />
+                        </div>
+                    </div>
+                    <div class="pt-4 columns mb-0 is-vcentered  has-text-centered">
+                        <div class="column">
+                            <h2 class="is-size-5">Rain</h2>
+                            <!-- <img src="./animals/spider/0.png" class="interpolation-image" alt="Seg Acc Curve." /> -->
+                        </div>
+                        <div class="column">
+                            <img src="static/images/rain/0.png" class="interpolation-image" alt="rain 0" />
+                        </div>
+                        <div class="column" id="interpolation-ex2-wrapper">
+                            <img src="static/images/rain/5.png" class="interpolation-image" alt="rain 5" />
+                        </div>
+                        <div class="column">
+                            <img src="static/images/rain/9.png" class="interpolation-image" alt="rain 9" />
+                        </div>
+                    </div>
+
+
+                    <div class="pt-4 columns mb-0 is-vcentered  has-text-centered">
+                        <div class="column">
+                            <h2 class="is-size-5">Day and Night</h2>
+                            <!-- <img src="./animals/spider/0.png" class="interpolation-image" alt="Seg Acc Curve." /> -->
+                        </div>
+                        <div class="column">
+                            <img src="static/images/daynight/0.png" class="interpolation-image" alt="Day Night 0" />
+                        </div>
+                        <div class="column" id="interpolation-ex3-wrapper">
+                            <img src="static/images/daynight/5.png" class="interpolation-image" alt="Day Night 5" />
+                        </div>
+                        <div class="column">
+                            <img src="static/images/daynight/9.png" class="interpolation-image" alt="Day Night 9" />
+                        </div>
+                    </div>
+
+                    <!-- <section class="all-sliders"> -->
+                    <!-- <label>
+          <input class="slider" id="range-slider" type="range" min="1" step="0.01" max="100" value="80">
+        </label> -->
+                    <!-- </section>       -->
+                    <div class="columns pt-5">
+                        <div class="column is-half is-offset-one-quarter">
+
+                            <div class="columns  is-vcentered">
+
+                                <div class="column is-11 pr-0 pl-0 ml-0 mr-0 has-text-centered" id="slider-container">
+                                    <!-- <label>
+          <input class="slider" id="range-slider-poster" type="range" min="1" step="1" max="265" value="0">          
+        </label> -->
+                                    <input class="is-fullwidth is-large is-info" id="range-slider-poster" name="slider" type="range" value="5" max="10">
+
+                                    <!-- <input class="slider is-fullwidth is-large is-info"
+                 id="interpolation-slider"
+                 step="1" min="0" max="265" value="0" type="range">     -->
+                                </div>
+                                <div class="column pr-0 pl-0 ml-0 mr-0">
+                                    <label for="slider">5</label>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="subtitle has-text-centered">
+                        <!-- Hybrid Model - Mixing Coefficient (&alpha;) -->
+                        Training Epoch
+                    </h2>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- / Results Overview -->
+
+    <!-- <section class="section" id="paper">
+        <div class="container is-mobile">
+            <div class="columns is-centered has-text-centered">
+                <div class="container content">
+                    <h2 class="title is-3">BibTeX</h2>
+                    <div id="bibtex" class="column has-text-justified is-centered">
+                        <pre class="language-bibtex"><code class=" language-bibtex"><span class="token class-name">@misc</span><span class="token punctuation">{</span><span class="token key regex">prabhudesai2023aligning</span><span class="token punctuation">,</span>
+              <span class="token property">title</span><span class="token string">={Aligning Text-to-Image Diffusion Models with Reward Backpropagation}</span><span class="token punctuation">,</span> 
+              <span class="token property">author</span><span class="token string">={Mihir Prabhudesai and Anirudh Goyal and Deepak Pathak and Katerina Fragkiadaki}</span><span class="token punctuation">,</span>
+              <span class="token property">year</span><span class="token string">={2023}</span><span class="token punctuation">,</span>
+              <span class="token property">eprint</span><span class="token string">={2310.03739}</span><span class="token punctuation">,</span>
+              <span class="token property">archivePrefix</span><span class="token string">={arXiv}</span><span class="token punctuation">,</span>
+              <span class="token property">primaryClass</span><span class="token string">={cs.CV}</span>
+              <span class="token punctuation">}</span></code><button>copy</button></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+
+    <footer class="footer">
+        <div class="container">
+            <div class="content has-text-centered">
+                <a class="icon-link" href="https://docs.google.com/document/d/1Wy-OdNdHZcWxlsSBALWcSZLke1xRzJXdR3efJoiF_jg/edit?usp=sharing">
+                    <i class="fas fa-file-pdf"></i>
+                </a>
+                <a class="icon-link" href="https://github.com/RewardMultiverse/rewardmultiverse.github.io" class="external-link" disabled>
+                    <i class="fab fa-github"></i>
+                    <div class="column is-8">
+
+                    </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="static/js/index.js"></script>
+    <!-- <script src="./static/js/prism.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs-bibtex@2.0.1/prism-bibtex.js" integrity="sha256-+dK6uqUp/DnP6ef97s8XcoynBnGe5vM5gvBECH0EB3U=" crossorigin="anonymous">
+    </script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>
